@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeinAbo — Deine Abos. Unter Kontrolle.</title>
+<meta name="description" content="MeinAbo ist die App für Deutschland: Verwalte alle Abonnements, Strom, Gas, Versicherungen — und spare bis zu €500 im Jahr.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #07111E;
+  --navy2: #0D1C2E;
+  --navy3: #122436;
+  --teal: #00D4C2;
+  --teal2: #00B5A5;
+  --tealGlow: rgba(0,212,194,0.15);
+  --orange: #FF6B35;
+  --green: #22C55E;
+  --white: #FFFFFF;
+  --gray: #6B8599;
+  --light: rgba(255,255,255,0.07);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 56px;
+  background: rgba(7,17,30,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--white); text-decoration: none; }
+.logo span { color: var(--teal); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta { background: var(--teal) !important; color: var(--navy) !important; padding: 10px 24px; border-radius: 100px; font-weight: 700 !important; box-shadow: 0 0 24px rgba(0,212,194,0.3); }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 60px; padding: 120px 56px 80px;
+  max-width: 1400px; margin: 0 auto; position: relative;
+}
+.hero-glow { position: absolute; top: -100px; left: -200px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(0,212,194,0.08) 0%, transparent 60%); pointer-events: none; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,212,194,0.08); border: 1px solid rgba(0,212,194,0.2); border-radius: 100px; padding: 7px 18px; font-size: 12px; font-weight: 600; color: var(--teal); letter-spacing: 0.5px; margin-bottom: 32px; animation: fadeUp 0.7s ease both; }
+.hero h1 { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(44px, 5.5vw, 72px); font-weight: 800; line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 24px; animation: fadeUp 0.7s 0.1s ease both; }
+.hero h1 .teal { color: var(--teal); }
+.hero h1 .outline { -webkit-text-stroke: 2px rgba(255,255,255,0.3); color: transparent; }
+.hero-desc { font-size: 17px; color: var(--gray); line-height: 1.75; max-width: 480px; margin-bottom: 40px; animation: fadeUp 0.7s 0.2s ease both; }
+.hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; margin-bottom: 48px; }
+.btn-primary { display: flex; align-items: center; gap: 10px; background: var(--teal); color: var(--navy); padding: 16px 28px; border-radius: 14px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; box-shadow: 0 8px 32px rgba(0,212,194,0.25); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,212,194,0.4); }
+.btn-outline { display: flex; align-items: center; gap: 10px; background: var(--light); color: var(--white); padding: 16px 28px; border-radius: 14px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.25s; }
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+.hero-trust { display: flex; align-items: center; gap: 16px; animation: fadeUp 0.7s 0.4s ease both; }
+.trust-avatars { display: flex; }
+.trust-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--navy); margin-left: -8px; font-size: 14px; display: flex; align-items: center; justify-content: center; background: var(--navy3); }
+.trust-avatar:first-child { margin-left: 0; }
+.trust-text { font-size: 13px; color: var(--gray); }
+.trust-text strong { color: var(--white); }
+
+/* PHONE */
+.hero-right { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; animation: fadeUp 0.7s 0.2s ease both; }
+.phone-wrap { position: relative; animation: float 5s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-16px) rotate(1deg); } }
+.phone { width: 300px; height: 620px; background: var(--navy2); border-radius: 48px; border: 1.5px solid rgba(255,255,255,0.1); overflow: hidden; position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04); }
+.phone-statusbar { height: 44px; background: var(--navy); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 11px; font-weight: 600; }
+.phone-header { background: var(--navy); padding: 14px 16px 20px; }
+.phone-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.phone-greeting { font-size: 11px; color: var(--gray); }
+.phone-name { font-size: 17px; font-weight: 700; }
+.phone-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--tealGlow); border: 1.5px solid var(--teal); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.phone-card { background: linear-gradient(135deg, #0F2240 0%, #0A1628 100%); border-radius: 18px; padding: 16px; border: 1px solid rgba(0,212,194,0.15); }
+.phone-card-lbl { font-size: 10px; color: var(--gray); margin-bottom: 4px; }
+.phone-card-amt { font-size: 30px; font-weight: 800; letter-spacing: -1px; }
+.phone-card-sub { font-size: 10px; color: var(--gray); margin-top: 2px; }
+.phone-card-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 12px 0; }
+.phone-card-row { display: flex; justify-content: space-around; }
+.pcrs { text-align: center; }
+.pcrs-val { font-size: 14px; font-weight: 700; }
+.pcrs-val.g { color: var(--green); }
+.pcrs-lbl { font-size: 9px; color: var(--gray); margin-top: 2px; }
+.phone-banner { margin: 10px 16px 0; background: var(--navy); border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(0,212,194,0.2); }
+.phone-banner-ico { width: 36px; height: 36px; border-radius: 10px; background: var(--tealGlow); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.phone-banner-title { font-size: 11px; font-weight: 700; }
+.phone-banner-sub { font-size: 9px; color: var(--gray); margin-top: 1px; }
+.phone-banner-amt { margin-left: auto; font-size: 13px; font-weight: 800; color: var(--teal); white-space: nowrap; }
+.phone-list { padding: 10px 16px; }
+.phone-list-title { font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+.phone-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 9px 11px; margin-bottom: 6px; }
+.phone-item-ico { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.phone-item-name { font-size: 11px; font-weight: 600; }
+.phone-item-meta { font-size: 9px; color: var(--gray); margin-top: 1px; }
+.phone-item-price { margin-left: auto; font-size: 11px; font-weight: 700; }
+.phone-item-badge { font-size: 8px; font-weight: 700; background: rgba(34,197,94,0.15); color: var(--green); padding: 2px 6px; border-radius: 100px; margin-top: 2px; }
+.float-card { position: absolute; background: var(--navy2); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.fc-left { left: -110px; top: 140px; animation: floatL 4s 1s ease-in-out infinite; }
+.fc-right { right: -100px; bottom: 160px; animation: floatR 4s 0.5s ease-in-out infinite; }
+@keyframes floatL { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes floatR { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+.fc-label { font-size: 10px; color: var(--gray); margin-bottom: 4px; }
+.fc-value { font-size: 20px; font-weight: 800; color: var(--teal); }
+.fc-sub { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+/* TRUSTED */
+.trusted { border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 28px 56px; display: flex; align-items: center; gap: 48px; overflow: hidden; }
+.trusted-label { font-size: 11px; color: var(--gray); white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; }
+.trusted-logos { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.trusted-logo { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.2); letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; cursor: default; }
+.trusted-logo:hover { color: rgba(255,255,255,0.5); }
+
+/* SECTIONS */
+.section { padding: 120px 56px; max-width: 1400px; margin: 0 auto; }
+.section-eyebrow { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; display: block; }
+.section-h { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(34px, 4vw, 54px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 64px; }
+.section-h em { color: var(--teal); font-style: normal; }
+
+/* BENTO GRID */
+.bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+.bcard { background: var(--navy2); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 32px; transition: all 0.3s; position: relative; overflow: hidden; }
+.bcard:hover { border-color: rgba(0,212,194,0.25); transform: translateY(-3px); }
+.bc1 { grid-column: span 7; }
+.bc2 { grid-column: span 5; }
+.bc3 { grid-column: span 4; }
+.bc4 { grid-column: span 4; }
+.bc5 { grid-column: span 4; }
+.bcard-icon { width: 52px; height: 52px; border-radius: 16px; background: var(--tealGlow); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; border: 1px solid rgba(0,212,194,0.15); }
+.bcard-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.bcard-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
+.bcard-visual { margin-top: 24px; background: var(--navy3); border-radius: 16px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); }
+.bv-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.bv-row:last-child { border-bottom: none; }
+.bv-icon { font-size: 18px; width: 28px; text-align: center; }
+.bv-name { font-size: 12px; font-weight: 600; flex: 1; }
+.bv-amt { font-size: 13px; font-weight: 700; }
+.bv-save { font-size: 10px; color: var(--green); font-weight: 600; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.stat-box { background: var(--navy3); border-radius: 12px; padding: 14px; border: 1px solid rgba(255,255,255,0.05); }
+.stat-box-val { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: var(--teal); }
+.stat-box-lbl { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
+/* HOW */
+.how-bg { background: var(--navy2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.how-step { position: relative; padding: 40px 32px; background: var(--navy3); border-radius: 24px; border: 1px solid rgba(255,255,255,0.07); transition: all 0.3s; }
+.how-step:hover { border-color: rgba(0,212,194,0.2); transform: translateY(-4px); }
+.how-step-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 64px; font-weight: 800; color: rgba(0,212,194,0.07); line-height: 1; position: absolute; top: 20px; right: 24px; }
+.how-step-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+.how-step-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.how-step-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
+.how-arrow { position: absolute; top: 50%; right: -16px; width: 32px; height: 32px; border-radius: 50%; background: var(--teal); color: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; z-index: 1; transform: translateY(-50%); }
+.how-step:last-child .how-arrow { display: none; }
+
+/* SAVINGS */
+.savings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.saving-card { background: var(--navy2); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden; }
+.saving-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--teal2)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+.saving-card:hover { transform: translateY(-4px); border-color: rgba(0,212,194,0.2); }
+.saving-card:hover::after { transform: scaleX(1); }
+.saving-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.saving-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.saving-name { font-size: 17px; font-weight: 700; }
+.saving-current { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.saving-amount { font-family: 'Bricolage Grotesque', sans-serif; font-size: 48px; font-weight: 800; color: var(--teal); letter-spacing: -2px; line-height: 1; }
+.saving-period { font-size: 13px; color: var(--gray); margin-top: 4px; margin-bottom: 20px; }
+.saving-bar-wrap { height: 6px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+.saving-bar { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+.saving-badges { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.saving-badge { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 100px; background: rgba(34,197,94,0.1); color: var(--green); }
+
+/* COMPARISON */
+.ct { background: var(--navy2); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; overflow: hidden; margin-top: 64px; }
+.ct-head { display: grid; grid-template-columns: 2fr repeat(4, 1fr); padding: 20px 28px; background: var(--navy3); border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 13px; font-weight: 700; }
+.ct-row { display: grid; grid-template-columns: 2fr repeat(4, 1fr); padding: 18px 28px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; align-items: center; transition: background 0.2s; }
+.ct-row:hover { background: rgba(255,255,255,0.02); }
+.ct-row:last-child { border-bottom: none; }
+.ct-feature { color: var(--gray); font-weight: 500; }
+.ct-yes { color: var(--green); text-align: center; }
+.ct-no { color: rgba(255,255,255,0.15); text-align: center; }
+.ct-part { font-size: 11px; color: var(--orange); font-weight: 600; text-align: center; }
+.ct-us { background: rgba(0,212,194,0.03); }
+
+/* TESTIMONIALS */
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.tcard { background: var(--navy3); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 28px; transition: all 0.3s; }
+.tcard:hover { border-color: rgba(0,212,194,0.2); transform: translateY(-3px); }
+.tcard-stars { font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+.tcard-text { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.8); margin-bottom: 20px; font-style: italic; }
+.tcard-author { display: flex; align-items: center; gap: 12px; }
+.tcard-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--navy2); display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1.5px solid rgba(255,255,255,0.1); }
+.tcard-name { font-size: 14px; font-weight: 700; }
+.tcard-role { font-size: 12px; color: var(--gray); margin-top: 1px; }
+
+/* CTA */
+.cta-section { padding: 120px 56px; text-align: center; position: relative; overflow: hidden; }
+.cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(0,212,194,0.07) 0%, transparent 60%); pointer-events: none; }
+.cta-section h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; position: relative; }
+.cta-section p { font-size: 18px; color: var(--gray); margin-bottom: 48px; position: relative; }
+.cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+.store-btn { display: flex; align-items: center; gap: 12px; background: var(--light); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 14px 24px; text-decoration: none; transition: all 0.25s; min-width: 180px; }
+.store-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--teal); transform: translateY(-2px); }
+.store-btn-ico { font-size: 28px; }
+.store-btn-sub { font-size: 10px; color: var(--gray); }
+.store-btn-name { font-size: 16px; font-weight: 700; color: var(--white); }
+.cta-guarantee { margin-top: 32px; font-size: 13px; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
+.cta-guarantee span { display: flex; align-items: center; gap: 6px; }
+
+/* FOOTER */
+footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 56px 32px; }
+.footer-top { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 48px; margin-bottom: 48px; }
+.footer-brand .logo { display: block; margin-bottom: 12px; }
+.footer-tagline { font-size: 14px; color: var(--gray); line-height: 1.6; max-width: 260px; }
+.footer-col-title { font-size: 12px; font-weight: 700; color: var(--white); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 14px; color: var(--gray); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+.footer-col a:hover { color: var(--teal); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; gap: 16px; }
+.footer-copy { font-size: 13px; color: var(--gray); }
+
+/* WAITLIST */
+.waitlist-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,212,194,0.08); border: 1px solid rgba(0,212,194,0.2); border-radius: 100px; padding: 7px 18px; font-size: 12px; font-weight: 600; color: var(--teal); margin-bottom: 24px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 1200px) {
+  .fc-left, .fc-right { display: none; }
+  .bento { grid-template-columns: 1fr 1fr; }
+  .bc1, .bc2, .bc3, .bc4, .bc5 { grid-column: span 1; }
+  .savings-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 1024px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
+  .hero-right { display: none; }
+  .hero-buttons, .hero-trust { justify-content: center; }
+  .section { padding: 80px 24px; }
+  .bento { grid-template-columns: 1fr; }
+  .bc1,.bc2,.bc3,.bc4,.bc5 { grid-column: span 1; }
+  .how-grid { grid-template-columns: 1fr; gap: 16px; }
+  .how-arrow { display: none; }
+  .savings-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .trusted { padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
+  .cta-section { padding: 80px 24px; }
+  footer { padding: 40px 24px 24px; }
+  .ct { overflow-x: auto; }
+  .ct-head, .ct-row { min-width: 520px; }
+}
+@media (max-width: 640px) {
+  .section { padding: 60px 16px; }
+  .bento { gap: 12px; }
+  .savings-grid { gap: 12px; }
+  .footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .trusted-logos { gap: 20px; }
+  .cta-guarantee { gap: 14px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Mein<span>Abo</span></a>
+  <div class="nav-links">
+    <a href="#features">Funktionen</a>
+    <a href="#savings">Ersparnis</a>
+    <a href="#how">So geht's</a>
+    <a href="#waitlist" class="nav-cta">Vorregistrieren</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="overflow:hidden;">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-left">
+      <div class="hero-badge">🇩🇪 Speziell für Deutschland entwickelt</div>
+      <h1>Deine Abos.<br><span class="teal">Unter</span> <span class="outline">Kontrolle.</span></h1>
+      <p class="hero-desc">Gas, Strom, Netflix, Krankenkasse, Internet — alles an einem Ort. Wir zeigen dir wo du zu viel zahlst und helfen dir bis zu <strong style="color:var(--white)">€500 im Jahr</strong> zu sparen.</p>
+      <div class="hero-buttons">
+        <a href="#waitlist" class="btn-primary">🔔 Benachrichtigen lassen</a>
+        <a href="#features" class="btn-outline">Mehr erfahren →</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <div class="trust-avatar">👨</div>
+          <div class="trust-avatar">👩</div>
+          <div class="trust-avatar">👨‍💼</div>
+          <div class="trust-avatar">👩‍💼</div>
+        </div>
+        <div class="trust-text"><strong>App in Entwicklung</strong> — jetzt vorregistrieren</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="phone-wrap">
+        <div class="float-card fc-left">
+          <div class="fc-label">Monatliche Ersparnis</div>
+          <div class="fc-value">€ 28</div>
+          <div class="fc-sub">beim Gastarif 🔥</div>
+        </div>
+        <div class="float-card fc-right">
+          <div class="fc-label">Potenzial/Jahr</div>
+          <div class="fc-value">€ 486</div>
+          <div class="fc-sub">identifiziert 💰</div>
+        </div>
+        <div class="phone">
+          <div class="phone-statusbar"><span>9:41</span><span style="font-size:10px">●●● 🔋</span></div>
+          <div class="phone-header">
+            <div class="phone-top-row">
+              <div><div class="phone-greeting">Guten Morgen 👋</div><div class="phone-name">Max</div></div>
+              <div class="phone-avatar">😊</div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-lbl">Gesamt pro Monat</div>
+              <div class="phone-card-amt">€ 312.50</div>
+              <div class="phone-card-sub">für 14 Abonnements</div>
+              <div class="phone-card-divider"></div>
+              <div class="phone-card-row">
+                <div class="pcrs"><div class="pcrs-val">€3.750</div><div class="pcrs-lbl">pro Jahr</div></div>
+                <div class="pcrs"><div class="pcrs-val g">−€486</div><div class="pcrs-lbl">Einsparpot.</div></div>
+                <div class="pcrs"><div class="pcrs-val">14</div><div class="pcrs-lbl">Abos</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-banner">
+            <div class="phone-banner-ico">💰</div>
+            <div><div class="phone-banner-title">Gas zu teuer!</div><div class="phone-banner-sub">€28/Monat günstiger möglich</div></div>
+            <div class="phone-banner-amt">€336/Jahr →</div>
+          </div>
+          <div class="phone-list">
+            <div class="phone-list-title">Abonnements</div>
+            <div class="phone-item">
+              <div class="phone-item-ico" style="background:rgba(239,68,68,0.15)">🔥</div>
+              <div><div class="phone-item-name">Gas — E.ON</div><div class="phone-item-meta">Versorger · 1. des Monats</div><div class="phone-item-badge">Günstiger verfügbar</div></div>
+              <div class="phone-item-price">€89</div>
+            </div>
+            <div class="phone-item">
+              <div class="phone-item-ico" style="background:rgba(107,72,255,0.15)">▶️</div>
+              <div><div class="phone-item-name">Netflix</div><div class="phone-item-meta">Streaming · 8. des Monats</div></div>
+              <div class="phone-item-price">€17.99</div>
+            </div>
+            <div class="phone-item">
+              <div class="phone-item-ico" style="background:rgba(34,197,94,0.15)">🏥</div>
+              <div><div class="phone-item-name">Krankenkasse TK</div><div class="phone-item-meta">Versicherung · monatlich</div></div>
+              <div class="phone-item-price">€220</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED -->
+<div class="trusted">
+  <div class="trusted-label">Tarife von</div>
+  <div class="trusted-logos">
+    <div class="trusted-logo">Verivox</div>
+    <div class="trusted-logo">Check24</div>
+    <div class="trusted-logo">E.ON</div>
+    <div class="trusted-logo">Vattenfall</div>
+    <div class="trusted-logo">Telekom</div>
+    <div class="trusted-logo">O2</div>
+    <div class="trusted-logo">Vodafone</div>
+    <div class="trusted-logo">EnBW</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section reveal" id="features">
+  <span class="section-eyebrow">Funktionen</span>
+  <h2 class="section-h">Alles was du brauchst,<br>um <em>Geld zu sparen</em></h2>
+  <div class="bento">
+    <div class="bcard bc1">
+      <div class="bcard-icon">📋</div>
+      <div class="bcard-title">Abo-Tracker ohne Bankzugang</div>
+      <div class="bcard-desc">Trag alle Abonnements manuell ein — Gas, Strom, Netflix, Handy, Versicherungen. Kein Bankzugang nötig. Maximaler Datenschutz nach DSGVO.</div>
+      <div class="bcard-visual">
+        <div class="bv-row"><span class="bv-icon">🔥</span><span class="bv-name">Gas — E.ON</span><div><div class="bv-amt">€89/Monat</div><div class="bv-save">💡 €28 günstiger möglich</div></div></div>
+        <div class="bv-row"><span class="bv-icon">⚡</span><span class="bv-name">Strom — Vattenfall</span><div><div class="bv-amt">€67/Monat</div></div></div>
+        <div class="bv-row"><span class="bv-icon">▶️</span><span class="bv-name">Netflix Premium</span><div><div class="bv-amt">€17.99/Monat</div></div></div>
+        <div class="bv-row"><span class="bv-icon">📱</span><span class="bv-name">Telekom Mobil</span><div><div class="bv-amt">€39.99/Monat</div><div class="bv-save">💡 €10 günstiger möglich</div></div></div>
+      </div>
+    </div>
+    <div class="bcard bc2">
+      <div class="bcard-icon">💰</div>
+      <div class="bcard-title">Einsparpotenzial auf einen Blick</div>
+      <div class="bcard-desc">Wir vergleichen deine Tarife mit besseren Angeboten und zeigen dir die konkrete Ersparnis in Euro.</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-box-val">€336</div><div class="stat-box-lbl">Gas/Jahr</div></div>
+        <div class="stat-box"><div class="stat-box-val">€120</div><div class="stat-box-lbl">Mobil/Jahr</div></div>
+        <div class="stat-box"><div class="stat-box-val">€486</div><div class="stat-box-lbl">Gesamt/Jahr</div></div>
+        <div class="stat-box"><div class="stat-box-val">5 Min</div><div class="stat-box-lbl">bis zur Ersparnis</div></div>
+      </div>
+    </div>
+    <div class="bcard bc3">
+      <div class="bcard-icon">🔔</div>
+      <div class="bcard-title">Kündigungsfristen-Alarm</div>
+      <div class="bcard-desc">Push-Benachrichtigung 6 Wochen vor Vertragsende — damit du nie wieder eine Kündigung verpasst und im falschen Tarif bleibst.</div>
+    </div>
+    <div class="bcard bc4">
+      <div class="bcard-icon">📊</div>
+      <div class="bcard-title">Ausgabenanalyse</div>
+      <div class="bcard-desc">Monatsübersicht, Jahresprognose und Aufschlüsselung nach Kategorien. Sieh genau wohin dein Geld fließt.</div>
+    </div>
+    <div class="bcard bc5">
+      <div class="bcard-icon">🔒</div>
+      <div class="bcard-title">100% DSGVO-konform</div>
+      <div class="bcard-desc">Keine Bankverknüpfung, keine Datenweitergabe an Dritte ohne Einwilligung. Deine Daten gehören dir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="how-bg">
+  <section class="section reveal" id="how">
+    <span class="section-eyebrow">So einfach geht's</span>
+    <h2 class="section-h">In 3 Minuten<br><em>zur Ersparnis</em></h2>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <span class="how-step-icon">📱</span>
+        <div class="how-step-title">App installieren</div>
+        <div class="how-step-desc">Bald kostenlos im App Store und Google Play verfügbar. Keine Registrierung mit Bankkonto erforderlich.</div>
+        <div class="how-arrow">→</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <span class="how-step-icon">✍️</span>
+        <div class="how-step-title">Abos eingeben</div>
+        <div class="how-step-desc">Trag deine monatlichen Ausgaben ein. Gas, Strom, Streaming, Handy, Versicherungen — alles in einer App.</div>
+        <div class="how-arrow">→</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <span class="how-step-icon">💸</span>
+        <div class="how-step-title">Geld sparen</div>
+        <div class="how-step-desc">Wir zeigen dir günstigere Tarife und verbinden dich direkt mit Verivox. Ein Klick — und du sparst.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SAVINGS -->
+<section class="section reveal" id="savings">
+  <span class="section-eyebrow">Einsparpotenzial</span>
+  <h2 class="section-h">Wo Deutsche<br><em>zu viel zahlen</em></h2>
+  <div class="savings-grid">
+    <div class="saving-card">
+      <div class="saving-header">
+        <div class="saving-icon" style="background:rgba(239,68,68,0.12)">🔥</div>
+        <div><div class="saving-name">Gas</div><div class="saving-current">Ø aktueller Tarif: €89/Monat</div></div>
+      </div>
+      <div class="saving-amount">€ 336</div>
+      <div class="saving-period">durchschnittliche Ersparnis pro Jahr</div>
+      <div class="saving-bar-wrap"><div class="saving-bar" style="width:75%"></div></div>
+      <div class="saving-badges"><div class="saving-badge">✓ Bis zu €28/Monat günstiger</div><div class="saving-badge">✓ Über Verivox wechseln</div></div>
+    </div>
+    <div class="saving-card">
+      <div class="saving-header">
+        <div class="saving-icon" style="background:rgba(0,212,194,0.12)">📱</div>
+        <div><div class="saving-name">Mobilfunk</div><div class="saving-current">Ø aktueller Tarif: €40/Monat</div></div>
+      </div>
+      <div class="saving-amount">€ 120</div>
+      <div class="saving-period">durchschnittliche Ersparnis pro Jahr</div>
+      <div class="saving-bar-wrap"><div class="saving-bar" style="width:45%"></div></div>
+      <div class="saving-badges"><div class="saving-badge">✓ Bis zu €10/Monat günstiger</div><div class="saving-badge">✓ O2, Vodafone, Telekom</div></div>
+    </div>
+    <div class="saving-card">
+      <div class="saving-header">
+        <div class="saving-icon" style="background:rgba(245,158,11,0.12)">⚡</div>
+        <div><div class="saving-name">Strom</div><div class="saving-current">Ø aktueller Tarif: €70/Monat</div></div>
+      </div>
+      <div class="saving-amount">€ 180</div>
+      <div class="saving-period">durchschnittliche Ersparnis pro Jahr</div>
+      <div class="saving-bar-wrap"><div class="saving-bar" style="width:55%"></div></div>
+      <div class="saving-badges"><div class="saving-badge">✓ Bis zu €15/Monat günstiger</div><div class="saving-badge">✓ Grüne Tarife verfügbar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section reveal" style="padding-top:0">
+  <span class="section-eyebrow">Vergleich</span>
+  <h2 class="section-h">Warum <em>MeinAbo</em><br>besser ist</h2>
+  <div class="ct">
+    <div class="ct-head">
+      <div>Funktion</div>
+      <div style="color:var(--teal)">MeinAbo</div>
+      <div style="color:var(--gray)">Finanzguru</div>
+      <div style="color:var(--gray)">Outbank</div>
+      <div style="color:var(--gray)">SwitchUp</div>
+    </div>
+    <div class="ct-row ct-us"><div class="ct-feature">Abo-Tracker (manuell)</div><div class="ct-yes">✓</div><div class="ct-no">✗</div><div class="ct-no">✗</div><div class="ct-no">✗</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Ohne Bankzugang</div><div class="ct-yes">✓</div><div class="ct-no">✗</div><div class="ct-no">✗</div><div class="ct-yes">✓</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Kommunalka + Streaming</div><div class="ct-yes">✓</div><div class="ct-part">teilw.</div><div class="ct-part">teilw.</div><div class="ct-no">✗</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Tarifvergleich in der App</div><div class="ct-yes">✓</div><div class="ct-part">nur Strom</div><div class="ct-no">✗</div><div class="ct-yes">✓</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Kündigungsfristen-Alarm</div><div class="ct-yes">✓</div><div class="ct-yes">✓</div><div class="ct-yes">✓</div><div class="ct-no">✗</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Kostenlos nutzbar</div><div class="ct-yes">✓</div><div class="ct-yes">✓</div><div class="ct-no">€3.99/Mo</div><div class="ct-yes">✓</div></div>
+    <div class="ct-row ct-us"><div class="ct-feature">Für Expats geeignet</div><div class="ct-yes">✓</div><div class="ct-no">✗</div><div class="ct-no">✗</div><div class="ct-part">teilw.</div></div>
+  </div>
+</section>
+
+
+
+<!-- CTA — COMING SOON -->
+<section class="cta-section reveal" id="waitlist">
+  <div class="cta-glow"></div>
+  <div class="waitlist-badge">🚀 In Entwicklung</div>
+  <h2>Bald <span style="color:var(--teal)">verfügbar</span></h2>
+  <p>MeinAbo befindet sich aktuell in der Entwicklung.<br>Die App erscheint bald im App Store und Google Play.</p>
+  <div class="cta-guarantee">
+    <span>🔒 DSGVO-konform</span>
+    <span>✓ Kein Bankzugang nötig</span>
+    <span>🇩🇪 Made in Germany</span>
+    <span>⭐ Kostenlos starten</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo">Mein<span>Abo</span></a>
+      <div class="footer-tagline">Die App für Deutschland — alle Abonnements und Verträge unter Kontrolle.</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Projekt</div>
+      <a href="#features">Funktionen</a>
+      <a href="#savings">Ersparnis</a>
+      <a href="#how">So geht's</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Unternehmen</div>
+      <a href="#">Über uns</a><a href="#">Blog</a><a href="#">Kontakt</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Rechtliches</div>
+      <a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 MeinAbo. Alle Rechte vorbehalten.</div>
+    <div class="footer-copy">🇩🇪 Made in Germany &nbsp;·&nbsp; 🇺🇦 Built with ❤️</div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
